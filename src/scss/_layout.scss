@@ -1,0 +1,4 @@
+// exclude this selector from being modularised, nice to remeber
+:global .app{
+    position: relative; // doesn't do anything :/
+}
