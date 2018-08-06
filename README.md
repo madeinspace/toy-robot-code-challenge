@@ -3,7 +3,7 @@
 ## Project structure
 
 ````
-build/  ___________________________________ # Production dir
+build/  ____________________________________ # Production dir
 src/
 |- index.jsx _______________________________ # Application entry 
 |- App.jsx _________________________________ # Application
