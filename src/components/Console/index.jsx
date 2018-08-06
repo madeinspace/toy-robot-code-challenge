@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Regex from './regex';
 
-const commands = ['PLACE', 'MOVE', 'RIGHT', 'LEFT', 'REPORT'];
 // const orientation = ['NORTH', 'EAST', 'SOUTH', 'WEST'];
 // board size = [5,5]
 
@@ -20,13 +19,11 @@ class Console extends Component {
         const placeMatch = Regex.place.exec(command);
         if (placeMatch) {
             const args = [placeMatch[1], placeMatch[2], placeMatch[3]];
-            this.validateMove(commands[0], args);
-        } else if (Regex.move.exec(command)) {
-            this.validateMove(commands[1]);
-        } else if (Regex.left.exec(command)) {
-            this.validateMove(commands[2]);
-        } else if (Regex.right.exec(command)) {
-            this.validateMove(commands[3]);
+            this.validateMove(command, args);
+        } else if (Regex.move.exec(command)
+                || Regex.left.exec(command)
+                || Regex.right.exec(command)) {
+            this.validateMove(command);
         } else if (Regex.report.exec(command)) {
             this.report();
         } else {
