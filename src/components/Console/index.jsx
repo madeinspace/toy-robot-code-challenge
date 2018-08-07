@@ -1,7 +1,11 @@
 /* eslint linebreak-style:0 */
 /* eslint no-console:0 */
+/* eslint react/jsx-one-expression-per-line:0 */
+/* eslint max-len:0 */
+/* eslint  lines-between-class-members:0 */
 import React, { Component } from 'react';
 import {
+    Alert,
     Button,
     Form,
     FormGroup,
@@ -10,6 +14,8 @@ import {
     Container,
     Row,
     Col,
+    InputGroup,
+    InputGroupAddon,
 } from 'reactstrap';
 import Regex from './regex';
 import Messages from './messages';
@@ -27,7 +33,7 @@ class Console extends Component {
     }
 
     componentDidMount() {
-        this.test();
+        // this.test();
     }
     
     test = () => {
@@ -41,6 +47,7 @@ class Console extends Component {
 
     handleCommand = (cmd) => {
         console.log(cmd);
+        this.setState({message: ''});
         const command = cmd.toUpperCase();
         let args = [];
         const placeMatch = Regex.place.exec(command);
@@ -152,7 +159,7 @@ class Console extends Component {
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        console.log('Reporting :', `${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
+        console.log(`Reporting : ${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
         this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
     }
 
@@ -162,8 +169,8 @@ class Console extends Component {
 
     displayMessage = message => this.setState({ message })
 
-    // can only proceed to move if safe.
-    validateMove = (coordinates) => {
+       // can only proceed to move if safe.
+       validateMove = (coordinates) => {
         // Test? validate that robot can move forward without falling out of the board
         let isOutOfBounds = true;
         /* eslint no-restricted-syntax : 0 */
@@ -176,7 +183,6 @@ class Console extends Component {
         }
         return isOutOfBounds;
     }
-
     handleSubmit = (event) => {
         const { command } = this.state;
         event.preventDefault();
@@ -197,22 +203,41 @@ class Console extends Component {
                         <div className="report">
                             <Form onSubmit={this.handleSubmit}>
                                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                                <Label for="command" className="mr-sm-2">
-                                    Command
-                                </Label>
-                                <Input
-                                    value={command}
-                                    onChange={this.handleChange}
-                                    type="text"
-                                    placeholder="type a commamd and hit enter / click submit" />
+                                    <Label for="command" className="mr-sm-2">
+                                        Please type a command in the field below and hit enter or click go.
+                                        Commands can have the following format:<br />
+                                        PLACE 0,0,NORTH<br />
+                                        MOVE<br />
+                                        LEFT<br />
+                                        RIGHT<br />
+                                        REPORT
+                                    </Label>
+                                    <InputGroup>
+                                        <Input
+                                                value={command}
+                                                onChange={this.handleChange}
+                                                type="text"
+                                                placeholder="type a command and hit enter / click submit" />
+                                        <InputGroupAddon addonType="append">
+                                            <Button>
+                                                GO
+                                            </Button>
+                                        </InputGroupAddon>
+                                    </InputGroup>
                                 </FormGroup>
-                                <Button>
-                                    Submit
-                                </Button>
+                                
                             </Form>
                         </div>
+                        { message !== '' ? (
+                            <div>
+                                <Alert color="info">
+                                    { message }
+                                </Alert>
+                            </div>
+                        ) : null
+                        }
                         <div>
-                            { message }
+                            
                         </div>
                     </Col>
                 </Row>
