@@ -90,18 +90,52 @@ class Console extends Component {
     }
     
     left = () => {
-        const { isPlaced } = this.state;
+        const { isPlaced, orientation } = this.state;
         console.log('turning left');
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
+        } else {
+            switch (orientation) {
+                case 'NORTH':
+                orientation = 'WEST';
+                break;
+                case 'SOUTH':
+                orientation = 'EAST';
+                break;
+                case 'EAST':
+                orientation = 'NORTH';
+                break;
+                case 'WEST':
+                orientation = 'SOUTH';
+                break;
+                default:
+            }
+            this.setState({ orientation }, () => { this.report(); });
         }
     }
     
     right = () => {
-        const { isPlaced } = this.state;
+        const { isPlaced, orientation } = this.state;
         console.log('turning right');
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
+        } else {
+            switch (orientation) {
+                case 'NORTH':
+                orientation = 'EAST';
+                break;
+                case 'SOUTH':
+                orientation = 'WEST';
+                break;
+                case 'EAST':
+                orientation = 'SOUTH';
+                break;
+                case 'WEST':
+                orientation = 'NORTH';
+                break;
+                default:
+            }
+            this.setState({ orientation }, () => { this.report(); });
         }
     }
     
