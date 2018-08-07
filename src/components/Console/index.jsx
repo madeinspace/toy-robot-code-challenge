@@ -22,6 +22,7 @@ class Console extends Component {
             orientation: '',
             isPlaced: false,
             message: '',
+            command: '',
         };
     }
 
@@ -38,9 +39,9 @@ class Console extends Component {
         setTimeout(this.handleCommand.bind(this, 'REPORT'), 0);
     }
 
-    handleCommand = (evt) => {
-        console.log(evt);
-        const command = evt.toUpperCase();
+    handleCommand = (cmd) => {
+        console.log(cmd);
+        const command = cmd.toUpperCase();
         let args = [];
         const placeMatch = Regex.place.exec(command);
         if (placeMatch) {
@@ -156,6 +157,10 @@ class Console extends Component {
         this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
     }
 
+    handleChange = (evt) => {
+        this.setState({ command: evt.target.value });
+    }
+
     displayMessage = message => this.setState({ message })
 
     // can only proceed to move if safe.
@@ -174,13 +179,13 @@ class Console extends Component {
     }
 
     handleSubmit = (event) => {
+        const { command } = this.state;
         event.preventDefault();
-        const command = this.refs.command.value;
-        console.log('Your command is', command);
+        this.handleCommand(command);
     }
 
     render() {
-        const { message } = this.state;
+        const { message, command } = this.state;
         return (
             <Container>
                 <Row>
@@ -193,17 +198,17 @@ class Console extends Component {
                             </h1>
                         </div>
                         <div className="report">
-                            
                             <Form onSubmit={this.handleSubmit}>
                                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                 <Label for="command" className="mr-sm-2">
                                     Command
                                 </Label>
                                 <Input
-                                    onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }}
+                                    value={command}
+                                    onChange={this.handleChange}
                                     type="text"
                                     ref="command"
-                                    placeholder="type a commamd and hit enter" />
+                                    placeholder="type a commamd and hit enter / click submit" />
                                 </FormGroup>
                                 <Button>
                                     Submit
