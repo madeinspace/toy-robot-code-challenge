@@ -26,8 +26,7 @@ class Console extends Component {
         if (placeMatch) {
             args = [parseInt(placeMatch[2], 10),
                     parseInt(placeMatch[3], 10),
-                    placeMatch[4],
-            ]; // x, y, f
+                    placeMatch[4]]; // x, y, f
             this.place(...args);
         } else if (Regex.move.exec(command)) {
             this.move();
@@ -38,13 +37,6 @@ class Console extends Component {
         } else if (Regex.report.exec(command)) {
             this.report();
         }
-    }
-    
-    reset = () => {
-        this.setState({
-            isPlaced: false,
-            message: '',
-        });
     }
 
     place = (...args) => {
@@ -95,22 +87,23 @@ class Console extends Component {
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
         } else {
+            let tempOrientation;
             switch (orientation) {
                 case 'NORTH':
-                orientation = 'WEST';
+                tempOrientation = 'WEST';
                 break;
                 case 'SOUTH':
-                orientation = 'EAST';
+                tempOrientation = 'EAST';
                 break;
                 case 'EAST':
-                orientation = 'NORTH';
+                tempOrientation = 'NORTH';
                 break;
                 case 'WEST':
-                orientation = 'SOUTH';
+                tempOrientation = 'SOUTH';
                 break;
                 default:
             }
-            this.setState({ orientation }, () => { this.report(); });
+            this.setState({ orientation: tempOrientation }, () => { this.report(); });
         }
     }
     
@@ -120,28 +113,29 @@ class Console extends Component {
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
         } else {
+            let tempOrientation;
             switch (orientation) {
                 case 'NORTH':
-                orientation = 'EAST';
+                tempOrientation = 'EAST';
                 break;
                 case 'SOUTH':
-                orientation = 'WEST';
+                tempOrientation = 'WEST';
                 break;
                 case 'EAST':
-                orientation = 'SOUTH';
+                tempOrientation = 'SOUTH';
                 break;
                 case 'WEST':
-                orientation = 'NORTH';
+                tempOrientation = 'NORTH';
                 break;
                 default:
             }
-            this.setState({ orientation }, () => { this.report(); });
+            this.setState({ orientation: tempOrientation }, () => { this.report(); });
         }
     }
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        this.displayMessage(`Robot placed at x: ${coordinates[0]} y:${coordinates[1]} facing:${orientation}`);
+        this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
     }
 
     displayMessage = message => this.setState({ message })
@@ -164,8 +158,8 @@ class Console extends Component {
     render() {
         const { message } = this.state;
         return (
-            <div>
-                <input onChange={(evt) => { this.handleCommand(evt.target.value); }} />
+            <div className="">
+                <input onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }} />
                 { message }
             </div>
         );
