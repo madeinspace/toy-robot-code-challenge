@@ -1,4 +1,5 @@
 /* eslint linebreak-style:0 */
+/* eslint no-console:0 */
 import React, { Component } from 'react';
 import Regex from './regex';
 import Messages from './messages';
@@ -23,7 +24,10 @@ class Console extends Component {
         let args = [];
         const placeMatch = Regex.place.exec(command);
         if (placeMatch) {
-            args = [parseInt(placeMatch[2]), parseInt(placeMatch[3]), placeMatch[4]]; // x, y, f
+            args = [parseInt(placeMatch[2], 10),
+                    parseInt(placeMatch[3], 10),
+                    placeMatch[4],
+            ]; // x, y, f
             this.place(...args);
         } else if (Regex.move.exec(command)) {
             this.move();
@@ -78,9 +82,11 @@ class Console extends Component {
                 console.log('Make robot face a direction first.');
         }
         
-        this.validateMove(tempCoord)
-        ? this.displayMessage(Messages.outOfBounds)
-        : this.setState({ coordinates: tempCoord }, () => { this.report(); });
+        if (this.validateMove(tempCoord)) {
+            this.displayMessage(Messages.outOfBounds);
+        } else {
+            this.setState({ coordinates: tempCoord }, () => { this.report(); });
+        }
     }
     
     left = () => {
@@ -110,7 +116,8 @@ class Console extends Component {
     validateMove = (coordinates) => {
         // Test? validate that robot can move forward without falling out of the board
         let isOutOfBounds = true;
-        for (let coord of coordinates) {
+        /* eslint no-restricted-syntax : 0 */
+        for (const coord of coordinates) {
             if (coord < 0 || coord > 4) {
                 isOutOfBounds = true;
                 break;
