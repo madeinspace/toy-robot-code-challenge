@@ -16,10 +16,20 @@ class Console extends Component {
     }
 
     componentDidMount() {
-        this.handleCommand('PLACE 0,0,NORTH');
+        this.test();
+    }
+    
+    test = () => {
+        this.handleCommand('PLACE 1,2,EAST');
+        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
+        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
+        setTimeout(this.handleCommand.bind(this, 'LEFT'), 0);
+        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
+        setTimeout(this.handleCommand.bind(this, 'REPORT'), 0);
     }
 
     handleCommand = (evt) => {
+        console.log(evt);
         const command = evt.toUpperCase();
         let args = [];
         const placeMatch = Regex.place.exec(command);
@@ -45,7 +55,6 @@ class Console extends Component {
             orientation: args[2],
             isPlaced: true,
         });
-        this.displayMessage(`Robot placed at x: ${args[0]} y:${args[1]} facing:${args[2]}`);
     }
 
     move = () => {
@@ -54,7 +63,7 @@ class Console extends Component {
             this.displayMessage(Messages.notYetPlaced);
             return;
         }
-        // don't mutate the current coordinates
+        // don't mutate the state
         const tempCoord = [...coordinates];
 
         switch (orientation) {
@@ -71,19 +80,17 @@ class Console extends Component {
             tempCoord[0] -= 1;
                 break;
             default:
-                console.log('Make robot face a direction first.');
         }
         
         if (this.validateMove(tempCoord)) {
             this.displayMessage(Messages.outOfBounds);
         } else {
-            this.setState({ coordinates: tempCoord }, () => { this.report(); });
+            this.setState({ coordinates: tempCoord });
         }
     }
     
     left = () => {
         const { isPlaced, orientation } = this.state;
-        console.log('turning left');
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
         } else {
@@ -103,13 +110,12 @@ class Console extends Component {
                 break;
                 default:
             }
-            this.setState({ orientation: tempOrientation }, () => { this.report(); });
+            this.setState({ orientation: tempOrientation });
         }
     }
     
     right = () => {
         const { isPlaced, orientation } = this.state;
-        console.log('turning right');
         if (!isPlaced) {
             this.displayMessage(Messages.notYetPlaced);
         } else {
@@ -129,12 +135,14 @@ class Console extends Component {
                 break;
                 default:
             }
-            this.setState({ orientation: tempOrientation }, () => { this.report(); });
+            this.setState({ orientation: tempOrientation });
         }
     }
     
     report = () => {
         const { coordinates, orientation } = this.state;
+        console.log('Reorting :', this.state);
+        this.forceUpdate();
         this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
     }
 
@@ -158,9 +166,14 @@ class Console extends Component {
     render() {
         const { message } = this.state;
         return (
-            <div className="">
-                <input onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }} />
-                { message }
+            <div className="wrapper">
+                <div className="command">
+                    {/* eslint no-unused-expressions : 0 */}
+                    <input onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }} />
+                </div>
+                <div className="report">
+                    { message }
+                </div>
             </div>
         );
     }

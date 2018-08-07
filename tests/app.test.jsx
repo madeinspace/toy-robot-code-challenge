@@ -2,10 +2,10 @@ import 'jsdom-global/register';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import App from '../src/App';
+import Console from '../src/components/Console';
 
-describe('The App', () => {
+describe('The Console', () => {
   it('should render without throwing an error', () => {
-    expect(shallow(<App />)).toExist();
+    expect(shallow(<Console />)).toExist();
   });
 });
