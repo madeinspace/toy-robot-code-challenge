@@ -152,8 +152,7 @@ class Console extends Component {
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        console.log('Reorting :', this.state);
-        this.forceUpdate();
+        console.log('Reporting :', `${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
         this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
     }
 
@@ -191,8 +190,6 @@ class Console extends Component {
                 <Row>
                     <Col>
                         <div className="command">
-                            {/* eslint no-unused-expressions : 0 */}
-                            {/* eslint react/no-string-refs : 0 */}
                             <h1>
                                 Toy robot
                             </h1>
@@ -207,7 +204,6 @@ class Console extends Component {
                                     value={command}
                                     onChange={this.handleChange}
                                     type="text"
-                                    ref="command"
                                     placeholder="type a commamd and hit enter / click submit" />
                                 </FormGroup>
                                 <Button>
