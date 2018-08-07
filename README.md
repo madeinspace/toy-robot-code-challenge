@@ -1,4 +1,4 @@
-# Test for Fabrice Million
+# Toy robot code challenge
 
 ## Project structure
 
