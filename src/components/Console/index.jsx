@@ -1,6 +1,16 @@
 /* eslint linebreak-style:0 */
 /* eslint no-console:0 */
 import React, { Component } from 'react';
+import {
+    Button,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Container,
+    Row,
+    Col,
+} from 'reactstrap';
 import Regex from './regex';
 import Messages from './messages';
 
@@ -163,18 +173,49 @@ class Console extends Component {
         return isOutOfBounds;
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const command = this.refs.command.value;
+        console.log('Your command is', command);
+    }
+
     render() {
         const { message } = this.state;
         return (
-            <div className="wrapper">
-                <div className="command">
-                    {/* eslint no-unused-expressions : 0 */}
-                    <input onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }} />
-                </div>
-                <div className="report">
-                    { message }
-                </div>
-            </div>
+            <Container>
+                <Row>
+                    <Col>
+                        <div className="command">
+                            {/* eslint no-unused-expressions : 0 */}
+                            {/* eslint react/no-string-refs : 0 */}
+                            <h1>
+                                Toy robot
+                            </h1>
+                        </div>
+                        <div className="report">
+                            
+                            <Form onSubmit={this.handleSubmit}>
+                                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                                <Label for="command" className="mr-sm-2">
+                                    Command
+                                </Label>
+                                <Input
+                                    onKeyPress={(evt) => { evt.key === 'Enter' ? this.handleCommand(evt.target.value) : null; }}
+                                    type="text"
+                                    ref="command"
+                                    placeholder="type a commamd and hit enter" />
+                                </FormGroup>
+                                <Button>
+                                    Submit
+                                </Button>
+                            </Form>
+                        </div>
+                        <div>
+                            { message }
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
