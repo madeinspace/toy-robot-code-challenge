@@ -19,6 +19,7 @@ import {
 } from 'reactstrap';
 import Regex from './regex';
 import Messages from './messages';
+import styles from './console.scss';
 
 class Console extends Component {
     constructor(props) {
@@ -161,7 +162,11 @@ class Console extends Component {
     report = () => {
         const { coordinates, orientation } = this.state;
         console.log(`Reporting : ${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
-        this.displayMessage(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
+        if (coordinates.length === 0) {
+            this.displayMessage('Nothing to report');
+        } else {
+            this.displayMessage(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
+        }
     }
 
     handleChange = (evt) => {
@@ -201,7 +206,7 @@ class Console extends Component {
                                 Toy robot
                             </h1>
                         </div>
-                        <div className="report">
+                        <div className={styles.report}>
                             <Form onSubmit={this.handleSubmit}>
                                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                     <Label for="command" className="mr-sm-2">
