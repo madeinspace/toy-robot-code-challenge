@@ -17,6 +17,8 @@ MOVE will move the toy robot one unit forward in the direction it is currently f
 LEFT and RIGHT will rotate the robot 90 degrees in the specified direction without changing the position of the robot.  
 REPORT will announce the X,Y and orientation of the robot.  
 
+TODO: Unit tests and/or integration test.
+
 ### Installation
 
 1- Clone the app repo `git clone https://github.com/madeinspace/toy-robot-code-challenge.git`
