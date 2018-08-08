@@ -6,22 +6,20 @@ This application is a simulation of a toy robot moving on a 5x5 square table top
 
 The console accepts commands of this format:
 
-PLACE 0,0,NORTH
-MOVE
-RIGHT
-LEFT
-REPORT
+PLACE 0,0,NORTH  
+MOVE  
+RIGHT  
+LEFT  
+REPORT  
 
-PLACE will put the toy robot on the table in position X,Y and facing NORTH, SOUTH, EAST or WEST.
-MOVE will move the toy robot one unit forward in the direction it is currently facing.
-LEFT and RIGHT will rotate the robot 90 degrees in the specified direction without changing the position of the robot.
-REPORT will announce the X,Y and orientation of the robot.
+PLACE will put the toy robot on the table in position X,Y and facing NORTH, SOUTH, EAST or WEST.  
+MOVE will move the toy robot one unit forward in the direction it is currently facing.  
+LEFT and RIGHT will rotate the robot 90 degrees in the specified direction without changing the position of the robot.  
+REPORT will announce the X,Y and orientation of the robot.  
 
 ### Installation
 
-1- Clone the app repo
-
-`git clone https://github.com/madeinspace/toy-robot-code-challenge.git`
+1- Clone the app repo `git clone https://github.com/madeinspace/toy-robot-code-challenge.git`
 
 2- `yarn` or `npm install` to install npm packages
 
