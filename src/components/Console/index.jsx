@@ -47,7 +47,8 @@ class Console extends Component {
 
     handleCommand = (cmd) => {
         console.log(cmd);
-        this.setState({message: ''});
+        this.setState({ message: '' });
+
         const command = cmd.toUpperCase();
         let args = [];
         const placeMatch = Regex.place.exec(command);
@@ -159,8 +160,8 @@ class Console extends Component {
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        console.log(`Reporting : ${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
-        this.displayMessage(`${coordinates[0]}, ${coordinates[1]}, ${orientation}`);
+        console.log(`Reporting : ${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
+        this.displayMessage(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
     }
 
     handleChange = (evt) => {
