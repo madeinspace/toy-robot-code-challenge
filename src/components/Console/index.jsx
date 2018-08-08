@@ -225,7 +225,7 @@ class Console extends Component {
                                                 value={command}
                                                 onChange={this.handleChange}
                                                 type="text"
-                                                placeholder="type a command and hit enter / click submit" />
+                                                placeholder="type a command and hit enter / click go" />
                                         <InputGroupAddon addonType="append">
                                             <Button>
                                                 GO
