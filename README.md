@@ -1,36 +1,36 @@
 # Toy robot code challenge
 
-## Project structure
+## Introduction
 
-````
-build/  ____________________________________ # Production dir
-src/
-|- index.jsx _______________________________ # Application entry 
-|- App.jsx _________________________________ # Application
-|  |- components/ __________________________ # React components
-|  |- scss/ ________________________________ # Styles
+This application is a simulation of a toy robot moving on a 5x5 square table top.
 
-tests/ _____________________________________ # Tests directory
+The console accepts commands of this format:
 
-webpack
-|- paths.js ________________________________ # webpack paths
-|- webpack.common.js _______________________ # common webpack config
-|- webpack.dev.js __________________________ # development config
-|- webpack.prod.js _________________________ # production config      
-````
+PLACE 0,0,NORTH
+MOVE
+RIGHT
+LEFT
+REPORT
 
+PLACE will put the toy robot on the table in position X,Y and facing NORTH, SOUTH, EAST or WEST.
+MOVE will move the toy robot one unit forward in the direction it is currently facing.
+LEFT and RIGHT will rotate the robot 90 degrees in the specified direction without changing the position of the robot.
+REPORT will announce the X,Y and orientation of the robot.
 
 ### Installation
 
 1- Clone the app repo
 
-`git clone `
+`git clone https://github.com/madeinspace/toy-robot-code-challenge.git`
 
 2- `yarn` or `npm install` to install npm packages
 
 3- start dev server using `yarn start` or `npm start`.
 
-3- build and bundling resources for production `yarn build`.
+4- build and bundling resources for production `yarn build`.
+
+5- run the test suites using `yarn test`.
+
 
 #### Tech stack
 
@@ -41,3 +41,4 @@ webpack
 3- SCSS / CSS modules
 
 4- ES6
+
