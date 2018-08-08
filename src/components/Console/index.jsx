@@ -66,6 +66,8 @@ class Console extends Component {
             this.right();
         } else if (Regex.report.exec(command)) {
             this.report();
+        } else {
+            this.displayMessage(Messages.unknownCommand);
         }
     }
 
