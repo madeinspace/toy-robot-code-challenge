@@ -1,17 +1,33 @@
 import 'jsdom-global/register';
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import Regex from '../src/components/Console/regex';
 import Console from '../src/components/Console';
+
+/**
+ * 
+ * @param {*} state 
+ */
+const setup = () => {
+  return  shallow(<Console />);
+}
 
 describe('The Console', () => {
   it('should render without throwing an error', () => {
-    const wrapper = shallow(<Console />);
+    const wrapper = setup();
     expect(wrapper).toExist();
   });
+
+  
+  
 });
 
 describe('The Robot', () => {
+
+  it('should not be already placed on the table', () => {
+    const wrapper = setup();
+    expect(wrapper.state().isPlaced).toBeFalsy();
+  })
 
   it('should ignore commands if hasn\'t been placed on table', () => {
     // do we test the regex?
