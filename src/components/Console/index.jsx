@@ -3,6 +3,7 @@
 /* eslint react/jsx-one-expression-per-line:0 */
 /* eslint max-len:0 */
 /* eslint  lines-between-class-members:0 */
+/* eslint  no-unused-expressions:0 */
 import React, { Component } from 'react';
 import {
     Alert,
@@ -47,7 +48,7 @@ class Console extends Component {
     }
 
     handleCommand = (cmd) => {
-        console.log(cmd);
+        console.log('Command: ', cmd);
         const { isPlaced } = this.state;
         this.setState({ message: '' });
 
@@ -105,12 +106,13 @@ class Console extends Component {
         if (this.validatePosition(tempCoord)) {
             this.displayMessage(Messages.outOfBounds);
         } else {
+            console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
             this.setState({ coordinates: tempCoord });
         }
     }
     
     left = () => {
-        const { orientation } = this.state;
+        const { orientation, coordinates } = this.state;
      
         let tempOrientation;
         switch (orientation) {
@@ -128,11 +130,11 @@ class Console extends Component {
             break;
             default:
         }
-        this.setState({ orientation: tempOrientation });
+        this.setState({ orientation: tempOrientation }, () => { console.log(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`); return null; });
     }
     
     right = () => {
-        const { orientation } = this.state;
+        const { orientation, coordinates } = this.state;
       
         let tempOrientation;
         switch (orientation) {
@@ -150,7 +152,7 @@ class Console extends Component {
             break;
             default:
         }
-        this.setState({ orientation: tempOrientation });
+        this.setState({ orientation: tempOrientation }, () => { console.log(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`); return null; });
     }
     
     report = () => {
