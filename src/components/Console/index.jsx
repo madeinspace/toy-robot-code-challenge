@@ -48,6 +48,7 @@ class Console extends Component {
 
     handleCommand = (cmd) => {
         console.log(cmd);
+        const { isPlaced } = this.state;
         this.setState({ message: '' });
 
         const command = cmd.toUpperCase();
@@ -59,11 +60,11 @@ class Console extends Component {
                     placeMatch[4]]; // x, y, f
             this.place(...args);
         } else if (Regex.move.exec(command)) {
-            this.move();
+            isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.left.exec(command)) {
-            this.left();
+            isPlaced ? this.left() : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.right.exec(command)) {
-            this.right();
+            isPlaced ? this.right() : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.report.exec(command)) {
             this.report();
         } else {
@@ -80,11 +81,8 @@ class Console extends Component {
     }
 
     move = () => {
-        const { isPlaced, orientation, coordinates } = this.state;
-        if (!isPlaced) {
-            this.displayMessage(Messages.notYetPlaced);
-            return;
-        }
+        const { orientation, coordinates } = this.state;
+      
         // don't mutate the state
         const tempCoord = [...coordinates];
 
@@ -104,7 +102,7 @@ class Console extends Component {
             default:
         }
         
-        if (this.validateMove(tempCoord)) {
+        if (this.validatePosition(tempCoord)) {
             this.displayMessage(Messages.outOfBounds);
         } else {
             this.setState({ coordinates: tempCoord });
@@ -112,53 +110,47 @@ class Console extends Component {
     }
     
     left = () => {
-        const { isPlaced, orientation } = this.state;
-        if (!isPlaced) {
-            this.displayMessage(Messages.notYetPlaced);
-        } else {
-            let tempOrientation;
-            switch (orientation) {
-                case 'NORTH':
-                tempOrientation = 'WEST';
-                break;
-                case 'SOUTH':
-                tempOrientation = 'EAST';
-                break;
-                case 'EAST':
-                tempOrientation = 'NORTH';
-                break;
-                case 'WEST':
-                tempOrientation = 'SOUTH';
-                break;
-                default:
-            }
-            this.setState({ orientation: tempOrientation });
+        const { orientation } = this.state;
+     
+        let tempOrientation;
+        switch (orientation) {
+            case 'NORTH':
+            tempOrientation = 'WEST';
+            break;
+            case 'SOUTH':
+            tempOrientation = 'EAST';
+            break;
+            case 'EAST':
+            tempOrientation = 'NORTH';
+            break;
+            case 'WEST':
+            tempOrientation = 'SOUTH';
+            break;
+            default:
         }
+        this.setState({ orientation: tempOrientation });
     }
     
     right = () => {
-        const { isPlaced, orientation } = this.state;
-        if (!isPlaced) {
-            this.displayMessage(Messages.notYetPlaced);
-        } else {
-            let tempOrientation;
-            switch (orientation) {
-                case 'NORTH':
-                tempOrientation = 'EAST';
-                break;
-                case 'SOUTH':
-                tempOrientation = 'WEST';
-                break;
-                case 'EAST':
-                tempOrientation = 'SOUTH';
-                break;
-                case 'WEST':
-                tempOrientation = 'NORTH';
-                break;
-                default:
-            }
-            this.setState({ orientation: tempOrientation });
+        const { orientation } = this.state;
+      
+        let tempOrientation;
+        switch (orientation) {
+            case 'NORTH':
+            tempOrientation = 'EAST';
+            break;
+            case 'SOUTH':
+            tempOrientation = 'WEST';
+            break;
+            case 'EAST':
+            tempOrientation = 'SOUTH';
+            break;
+            case 'WEST':
+            tempOrientation = 'NORTH';
+            break;
+            default:
         }
+        this.setState({ orientation: tempOrientation });
     }
     
     report = () => {
@@ -177,8 +169,8 @@ class Console extends Component {
 
     displayMessage = message => this.setState({ message })
 
-       // can only proceed to move if safe.
-       validateMove = (coordinates) => {
+    // can only proceed to move if safe.
+    validatePosition = (coordinates) => {
         // Test? validate that robot can move forward without falling out of the board
         let isOutOfBounds = true;
         /* eslint no-restricted-syntax : 0 */
@@ -191,6 +183,7 @@ class Console extends Component {
         }
         return isOutOfBounds;
     }
+
     handleSubmit = (event) => {
         const { command } = this.state;
         event.preventDefault();
