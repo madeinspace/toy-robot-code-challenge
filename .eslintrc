@@ -35,6 +35,13 @@
         }
       }
     ],
+    "linebreak-style":0,
+    "no-console":0,
+    "brace-style":0,
+    "no-restricted-syntax": 0,
+    "react/jsx-one-expression-per-line":0,
+    "no-unused-expressions":0,
+    "lines-between-class-members" : 0,
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",

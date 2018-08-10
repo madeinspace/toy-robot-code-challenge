@@ -1,9 +1,4 @@
-/* eslint linebreak-style:0 */
-/* eslint no-console:0 */
-/* eslint react/jsx-one-expression-per-line:0 */
 /* eslint max-len:0 */
-/* eslint  lines-between-class-members:0 */
-/* eslint  no-unused-expressions:0 */
 import React, { Component } from 'react';
 import {
     Alert,
@@ -47,24 +42,31 @@ class Console extends Component {
         setTimeout(this.handleCommand.bind(this, 'REPORT'), 0);
     }
 
-    handleCommand = (cmd) => {
-        console.log('Command: ', cmd);
-        const { isPlaced } = this.state;
+    handleCommand = () => {
+        const { isPlaced, command } = this.state;
+        console.log('Command: ', command);
         this.setState({ message: '' });
 
-        const command = cmd.toUpperCase();
+        const cmd = command.toUpperCase();
         let args = [];
-        const placeMatch = Regex.place.exec(command);
+        const placeMatch = Regex.place.exec(cmd);
+        // PLACE
         if (placeMatch) {
             const coord = [parseInt(placeMatch[2], 10), parseInt(placeMatch[3], 10)];
             const orientation = placeMatch[4];
             args = [...coord, orientation];
-            this.place(...args);
-        } else if (Regex.move.exec(command)) {
+            this.validatePosition(coord) ? this.place(...args) : this.displayMessage(Messages.outOfBounds);
+        }
+        // MOVE
+        else if (Regex.move.exec(cmd)) {
             isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.left.exec(command) || Regex.right.exec(command)) {
-            isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.report.exec(command)) {
+        }
+        // RIGHT - LEFT
+        else if (Regex.left.exec(cmd) || Regex.right.exec(cmd)) {
+            isPlaced ? this.turn(cmd) : this.displayMessage(Messages.notYetPlaced);
+        }
+        // REPORT
+        else if (Regex.report.exec(cmd)) {
             this.report();
         } else {
             this.displayMessage(Messages.unknownCommand);
@@ -72,6 +74,7 @@ class Console extends Component {
     }
 
     place = (...args) => {
+        console.log('A robot has been placed at ', args[0], args[1]);
         this.setState({
             coordinates: [args[0], args[1]],
             orientation: args[2],
@@ -143,6 +146,7 @@ class Console extends Component {
     }
 
     handleChange = (evt) => {
+        console.log(evt.target.value);
         this.setState({ command: evt.target.value });
     }
 
@@ -151,11 +155,9 @@ class Console extends Component {
         this.setState({ message });
     }
 
-    // can only proceed to move if safe.
     validatePosition = (coordinates) => {
-        // Test? validate that robot can move forward without falling out of the board
         let isValid = true;
-        /* eslint no-restricted-syntax : 0 */
+        
         for (const coord of coordinates) {
             if (coord < 0 || coord > 4) {
                 isValid = false;
