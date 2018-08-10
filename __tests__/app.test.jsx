@@ -1,8 +1,8 @@
 import 'jsdom-global/register';
 import React from 'react';
 import { shallow } from 'enzyme';
-import Regex from '../src/components/Console/regex';
 import Console from '../src/components/Console';
+import Messages from '../src/components/Console/messages'
 
 /**
  * 
@@ -28,35 +28,73 @@ describe('The Robot', () => {
     expect(wrapper.state('isPlaced')).toBeFalsy();
   })
 
-  it('should ignore move, left and right commands if hasn\'t been placed on table', () => {
-    // do we test the regex?
-    throw new Error();
+  it('should ignore the move command if hasn\'t been placed on table', () => {
+
+    let wrapper = setup({
+      isPlaced: false,
+      command:'MOVE',
+    });
+
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.state('isPlaced')).toBeFalsy();
+  });
+
+  it('should ignore the turn commands if hasn\'t been placed on table', () => {
+
+    let wrapper = setup({
+      isPlaced: false,
+      command:'LEFT',
+    });
+
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.state('isPlaced')).toBeFalsy();
   });
 
   it('should position itself on a valid point on the table', () => {
-    // Unit test for validateMove?
+    let wrapper = setup({
+      coordinates: [],
+      orientation: '',
+      isPlaced: false,
+      command:'PLACE 0,0,NORTH',
+    });
 
-    throw new Error();
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.state('isPlaced')).toBeTruthy();
+    expect(wrapper.state('coordinates')).toEqual([0,0]);
+    expect(wrapper.state('orientation')).toBe('NORTH');
+  });
+
+  it('should throw an error message if placed outside of bounds', () => {
+    let wrapper = setup({
+      coordinates: [],
+      orientation: '',
+      isPlaced: false,
+      command:'PLACE 10,0,NORTH',
+    });
+
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.state('isPlaced')).toBeFalsy();
+    expect(wrapper.state('message')).toEqual(Messages.outOfBounds);
   });
   
   it('should ignore commands if moving out of bounds', () => {
-    // same as above might be redundant
-    throw new Error();
-  });
-  
-  it('should turn left when issued with left command', () => {
-    // test for state change? if north then west?
-    throw new Error();
+    let wrapper = setup({
+      isPlaced: true,
+      command:'MOVE',
+      coordinates: [0, 0],
+      orientation: 'WEST',
+    });
+
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.state('coordinates')).toEqual([0, 0]);
+
   });
 
-  it('should turn right when issued with right command', () => {
-    // test for state change? if north then east?
-    throw new Error();
-  });
 
-  it('should print position when issued a report command', () => {
-    // snapshot?
-    throw new Error();ZZX
-  });
 
 });

@@ -49,7 +49,7 @@ class Console extends Component {
         else if (Regex.move.exec(cmd)) {
             isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
         }
-        // RIGHT - LEFT
+        // TURN
         else if (Regex.left.exec(cmd) || Regex.right.exec(cmd)) {
             isPlaced ? this.turn(cmd) : this.displayMessage(Messages.notYetPlaced);
         }
