@@ -35,14 +35,10 @@ describe('The Robot', () => {
 
   it('should position itself on a valid point on the table', () => {
     // Unit test for validateMove?
+
     throw new Error();
   });
   
-  it('should move one unit when issued with move command', () => {
-    // check for coord changes?  
-    throw new Error();
-  });
-
   it('should ignore commands if moving out of bounds', () => {
     // same as above might be redundant
     throw new Error();
@@ -60,7 +56,7 @@ describe('The Robot', () => {
 
   it('should print position when issued a report command', () => {
     // snapshot?
-    throw new Error();
+    throw new Error();ZZX
   });
 
 });

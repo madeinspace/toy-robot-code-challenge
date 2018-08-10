@@ -26,21 +26,23 @@ class Console extends Component {
             isPlaced: false,
             message: '',
             command: '',
+            boardSize: 5,
         };
     }
 
     handleCommand = () => {
+        // empty message box
         this.setState({ message: '' });
         const { isPlaced, command } = this.state;
 
+        // don't mutate the state
         const cmd = command.slice().toUpperCase();
-        let args = [];
         const placeMatch = Regex.place.exec(cmd);
         // PLACE
         if (placeMatch) {
             const coord = [parseInt(placeMatch[2], 10), parseInt(placeMatch[3], 10)];
             const orientation = placeMatch[4];
-            args = [...coord, orientation];
+            const args = [...coord, orientation];
             this.validatePosition(coord) ? this.place(...args) : this.displayMessage(Messages.outOfBounds);
         }
         // MOVE
@@ -54,6 +56,10 @@ class Console extends Component {
         // REPORT
         else if (Regex.report.exec(cmd)) {
             this.report();
+        }
+        // unknown command
+        else {
+            this.displayMessage(Messages.unknownCommand);
         }
     }
 
@@ -89,11 +95,11 @@ class Console extends Component {
         }
         
         if (this.validatePosition(tempCoord)) {
-            console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
             this.setState({ coordinates: tempCoord });
+            console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
         } else {
-            console.error('Out of bound');
             this.displayMessage(Messages.outOfBounds);
+            console.error('Out of bound');
         }
     }
     
@@ -116,8 +122,8 @@ class Console extends Component {
             break;
             default:
         }
-        console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
         this.setState({ orientation: tempOrientation });
+        console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
     }
     
     report = () => {
@@ -132,15 +138,16 @@ class Console extends Component {
     handleChange = evt => this.setState({ command: evt.target.value });
 
     displayMessage = (message) => {
-        console.log(message);
         this.setState({ message });
+        console.log(message);
     }
 
     validatePosition = (coordinates) => {
+        const { boardSize } = this.state;
         let isValid = true;
         
         for (const coord of coordinates) {
-            if (coord < 0 || coord > 4) {
+            if (coord < 0 || coord > (boardSize - 1)) {
                 isValid = false;
             }
         }
