@@ -203,7 +203,7 @@ class Console extends Component {
                         </div>
                         { message !== '' ? (
                             <div>
-                                <Alert color="info">
+                                <Alert className="reports" color="info">
                                     { message }
                                 </Alert>
                             </div>
