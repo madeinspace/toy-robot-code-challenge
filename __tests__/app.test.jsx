@@ -14,9 +14,21 @@ const setup = (state = null) => {
   return wrapper;
 }
 
+// UNIT TEST
+
+describe('The Console', () => {
+  it('should validate the position based on coordinates and board size', () => {
+    let wrapper = setup();
+    expect(wrapper.instance().validatePosition([0, 0])).toBeTruthy();
+    expect(wrapper.instance().validatePosition([10, 0])).toBeFalsy();
+  });
+});
+
+// INTEGRATION TESTS
+
 describe('The Console', () => {
   it('should render without throwing an error', () => {
-    const wrapper = setup();
+    const wrapper = setup({});
     expect(wrapper).toExist();
   });
 });
@@ -53,7 +65,7 @@ describe('The Robot', () => {
     
   });
 
-  it('should position itself on a valid point on the table', () => {
+  it('should be positioned on a valid point on the table', () => {
     let wrapper = setup({
       coordinates: [],
       orientation: '',
