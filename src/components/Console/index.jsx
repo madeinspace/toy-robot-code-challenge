@@ -43,11 +43,10 @@ class Console extends Component {
     }
 
     handleCommand = () => {
-        const { isPlaced, command } = this.state;
-        console.log('Command: ', command);
         this.setState({ message: '' });
+        const { isPlaced, command } = this.state;
 
-        const cmd = command.toUpperCase();
+        const cmd = command.slice().toUpperCase();
         let args = [];
         const placeMatch = Regex.place.exec(cmd);
         // PLACE
@@ -68,8 +67,6 @@ class Console extends Component {
         // REPORT
         else if (Regex.report.exec(cmd)) {
             this.report();
-        } else {
-            this.displayMessage(Messages.unknownCommand);
         }
     }
 

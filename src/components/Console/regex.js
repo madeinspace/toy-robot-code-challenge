@@ -1,6 +1,6 @@
 /* eslint linebreak-style: 0 */
 const regex = {
-    place: /^\s*(PLACE)\s+(\d)(?:,\s*)(\d)(?:,\s*)(NORTH|EAST|SOUTH|WEST)$/g,
+    place: /^\s*(PLACE)\s+(\d+)(?:,\s*)(\d+)(?:,\s*)(NORTH|EAST|SOUTH|WEST)$/,
     move: /^move\s*$/i,
     left: /^left\s*$/i,
     right: /^right\s*$/i,
