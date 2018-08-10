@@ -69,7 +69,7 @@ class Console extends Component {
             orientation: args[2],
             isPlaced: true,
         });
-        console.log(`A robot has been placed at:, ${args[0]}, ${args[1]}, facing ${args[2]}`);
+        // console.log(`A robot has been placed at:, ${args[0]}, ${args[1]}, facing ${args[2]}`);
     }
 
     move = () => {
@@ -96,7 +96,7 @@ class Console extends Component {
         
         if (this.validatePosition(tempCoord)) {
             this.setState({ coordinates: tempCoord });
-            console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
+            // console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
         } else {
             this.displayMessage(Messages.outOfBounds);
             console.error('Out of bound');
@@ -123,7 +123,7 @@ class Console extends Component {
             default:
         }
         this.setState({ orientation: tempOrientation });
-        console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
+        // console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
     }
     
     report = () => {
@@ -139,7 +139,7 @@ class Console extends Component {
 
     displayMessage = (message) => {
         this.setState({ message });
-        console.log(message);
+        // console.log(message);
     }
 
     validatePosition = (coordinates) => {

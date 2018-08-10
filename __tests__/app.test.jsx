@@ -2,27 +2,17 @@ import 'jsdom-global/register';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Console from '../src/components/Console';
-import Messages from '../src/components/Console/messages'
+import Messages from '../src/components/Console/messages';
+import {
+  Form,
+  Button,
+} from 'reactstrap';
 
-/**
- * 
- * @param {*} state 
- */
 const setup = (state = null) => {
   const wrapper = shallow(<Console />);
   if (state) wrapper.setState(state)
   return wrapper;
 }
-
-// UNIT TEST
-
-describe('The Console', () => {
-  it('should validate the position based on coordinates and board size', () => {
-    let wrapper = setup();
-    expect(wrapper.instance().validatePosition([0, 0])).toBeTruthy();
-    expect(wrapper.instance().validatePosition([10, 0])).toBeFalsy();
-  });
-});
 
 // INTEGRATION TESTS
 
@@ -30,6 +20,19 @@ describe('The Console', () => {
   it('should render without throwing an error', () => {
     const wrapper = setup({});
     expect(wrapper).toExist();
+  });
+  
+  it('should print position when issued a report command', () => {
+    let wrapper = setup({
+      isPlaced: true,
+      command:'REPORT',
+      coordinates: [0,0],
+      orientation: 'NORTH',
+    });
+    wrapper.instance().handleCommand();
+    wrapper.update();
+    expect(wrapper.find('.reports')).toExist();
+    expect(wrapper.find('.reports').render().text()).toEqual('0, 0, NORTH');
   });
 });
 
@@ -109,17 +112,23 @@ describe('The Robot', () => {
 
   });
 
-  it('should print position when issued a report command', () => {
-    let wrapper = setup({
-      isPlaced: true,
-      command:'REPORT',
-      coordinates: [0,0],
-      orientation: 'NORTH',
-    });
-    wrapper.instance().handleCommand();
-    wrapper.update();
-    expect(wrapper.find('.reports')).toExist();
-    expect(wrapper.find('.reports').render().text()).toEqual('0, 0, NORTH');
-  });
+  it.skip('Should call the handleCommand when clicking on the go button', () => {
+    const onSubmit = sinon.spy();
+    const wrapper = mount(
+        <Form onSubmit={this.handleSubmit} />
+    );
+    const button = wrapper.find('.subCom');
+    button.simulate('submit');
 
+  })
+});
+
+// UNIT TEST
+
+describe('The Console', () => {
+  it('should validate the position based on coordinates and board size', () => {
+    let wrapper = setup();
+    expect(wrapper.instance().validatePosition([0, 0])).toBeTruthy();
+    expect(wrapper.instance().validatePosition([10, 0])).toBeFalsy();
+  });
 });
