@@ -52,7 +52,7 @@ describe('The Robot', () => {
     expect(wrapper.state('isPlaced')).toBeFalsy();
   });
 
-  it('should ignore the LEFT commands if hasn\'t been placed on table', () => {
+  it('should ignore the turn commands if hasn\'t been placed on table', () => {
 
     let wrapper = setup({
       isPlaced: false,
@@ -92,6 +92,7 @@ describe('The Robot', () => {
     wrapper.update();
     expect(wrapper.state('isPlaced')).toBeFalsy();
     expect(wrapper.state('message')).toEqual(Messages.outOfBounds);
+    expect(wrapper.find('.reports').render().text()).toEqual(Messages.outOfBounds);
   });
   
   it('should ignore commands if moving out of bounds', () => {
@@ -112,14 +113,13 @@ describe('The Robot', () => {
     let wrapper = setup({
       isPlaced: true,
       command:'REPORT',
-      coordinates: [0, 0],
+      coordinates: [0,0],
       orientation: 'NORTH',
     });
     wrapper.instance().handleCommand();
     wrapper.update();
     expect(wrapper.find('.reports')).toExist();
-    // TODO: check against rendered html
-    // expect(wrapper.find('.reports').text()).toEqual('[0, 0, NORTH]');
+    expect(wrapper.find('.reports').render().text()).toEqual('0, 0, NORTH');
   });
 
 });
