@@ -29,19 +29,6 @@ class Console extends Component {
         };
     }
 
-    componentDidMount() {
-        // this.test();
-    }
-    
-    test = () => {
-        this.handleCommand('PLACE 1,2,EAST');
-        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
-        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
-        setTimeout(this.handleCommand.bind(this, 'LEFT'), 0);
-        setTimeout(this.handleCommand.bind(this, 'MOVE'), 0);
-        setTimeout(this.handleCommand.bind(this, 'REPORT'), 0);
-    }
-
     handleCommand = () => {
         this.setState({ message: '' });
         const { isPlaced, command } = this.state;
@@ -71,12 +58,12 @@ class Console extends Component {
     }
 
     place = (...args) => {
-        console.log('A robot has been placed at ', args[0], args[1]);
         this.setState({
             coordinates: [args[0], args[1]],
             orientation: args[2],
             isPlaced: true,
         });
+        console.log(`A robot has been placed at:, ${args[0]}, ${args[1]}, facing ${args[2]}`);
     }
 
     move = () => {
@@ -142,10 +129,7 @@ class Console extends Component {
         }
     }
 
-    handleChange = (evt) => {
-        console.log(evt.target.value);
-        this.setState({ command: evt.target.value });
-    }
+    handleChange = evt => this.setState({ command: evt.target.value });
 
     displayMessage = (message) => {
         console.log(message);
@@ -164,8 +148,8 @@ class Console extends Component {
     }
 
     handleSubmit = (event) => {
-        const { command } = this.state;
         event.preventDefault();
+        const { command } = this.state;
         this.handleCommand(command);
     }
 
