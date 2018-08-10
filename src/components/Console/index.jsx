@@ -56,15 +56,13 @@ class Console extends Component {
         let args = [];
         const placeMatch = Regex.place.exec(command);
         if (placeMatch) {
-            args = [parseInt(placeMatch[2], 10),
-                    parseInt(placeMatch[3], 10),
-                    placeMatch[4]]; // x, y, f
+            const coord = [parseInt(placeMatch[2], 10), parseInt(placeMatch[3], 10)];
+            const orientation = placeMatch[4];
+            args = [...coord, orientation];
             this.place(...args);
         } else if (Regex.move.exec(command)) {
             isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.left.exec(command)) {
-            isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.right.exec(command)) {
+        } else if (Regex.left.exec(command) || Regex.right.exec(command)) {
             isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.report.exec(command)) {
             this.report();
@@ -104,10 +102,11 @@ class Console extends Component {
         }
         
         if (this.validatePosition(tempCoord)) {
-            this.displayMessage(Messages.outOfBounds);
-        } else {
             console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
             this.setState({ coordinates: tempCoord });
+        } else {
+            console.error('Out of bound');
+            this.displayMessage(Messages.outOfBounds);
         }
     }
     
@@ -130,12 +129,12 @@ class Console extends Component {
             break;
             default:
         }
-        this.setState({ orientation: tempOrientation }, () => { console.log(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`); return null; });
+        console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
+        this.setState({ orientation: tempOrientation });
     }
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        console.log(`Reporting : ${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
         if (coordinates.length === 0) {
             this.displayMessage('Nothing to report');
         } else {
@@ -147,21 +146,22 @@ class Console extends Component {
         this.setState({ command: evt.target.value });
     }
 
-    displayMessage = message => this.setState({ message })
+    displayMessage = (message) => {
+        console.log(message);
+        this.setState({ message });
+    }
 
     // can only proceed to move if safe.
     validatePosition = (coordinates) => {
         // Test? validate that robot can move forward without falling out of the board
-        let isOutOfBounds = true;
+        let isValid = true;
         /* eslint no-restricted-syntax : 0 */
         for (const coord of coordinates) {
             if (coord < 0 || coord > 4) {
-                isOutOfBounds = true;
-                break;
+                isValid = false;
             }
-            isOutOfBounds = false;
         }
-        return isOutOfBounds;
+        return isValid;
     }
 
     handleSubmit = (event) => {
@@ -185,8 +185,10 @@ class Console extends Component {
                             <Form onSubmit={this.handleSubmit}>
                                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                     <Label for="command" className="mr-sm-2">
-                                        Please type a command in the field below and hit enter or click go.
-                                        Commands can have the following format:<br />
+                                        <p>
+                                            Please type a command in the field below and hit enter or click go.
+                                            Commands can have the following format:
+                                        </p>
                                         PLACE 0,0,NORTH<br />
                                         MOVE<br />
                                         LEFT<br />
