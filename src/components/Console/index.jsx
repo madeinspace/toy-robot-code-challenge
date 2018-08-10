@@ -62,9 +62,7 @@ class Console extends Component {
             this.place(...args);
         } else if (Regex.move.exec(command)) {
             isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.left.exec(command)) {
-            isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
-        } else if (Regex.right.exec(command)) {
+        } else if (Regex.left.exec(command) || Regex.right.exec(command)) {
             isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.report.exec(command)) {
             this.report();
@@ -104,6 +102,7 @@ class Console extends Component {
         }
         
         if (this.validatePosition(tempCoord)) {
+            console.warn('Out of bound');
             this.displayMessage(Messages.outOfBounds);
         } else {
             console.log(`${tempCoord[1]}, ${tempCoord[0]}, ${orientation}`);
@@ -130,12 +129,12 @@ class Console extends Component {
             break;
             default:
         }
-        this.setState({ orientation: tempOrientation }, () => { console.log(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`); return null; });
+        console.log(`${coordinates[1]}, ${coordinates[0]}, ${tempOrientation}`);
+        this.setState({ orientation: tempOrientation });
     }
     
     report = () => {
         const { coordinates, orientation } = this.state;
-        console.log(`Reporting : ${coordinates[1]}, ${coordinates[0]}, ${orientation}`);
         if (coordinates.length === 0) {
             this.displayMessage('Nothing to report');
         } else {
@@ -147,7 +146,10 @@ class Console extends Component {
         this.setState({ command: evt.target.value });
     }
 
-    displayMessage = message => this.setState({ message })
+    displayMessage = (message) => {
+        console.log(message);
+        this.setState({ message });
+    }
 
     // can only proceed to move if safe.
     validatePosition = (coordinates) => {
