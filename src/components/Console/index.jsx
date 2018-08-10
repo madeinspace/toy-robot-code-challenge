@@ -63,9 +63,9 @@ class Console extends Component {
         } else if (Regex.move.exec(command)) {
             isPlaced ? this.move() : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.left.exec(command)) {
-            isPlaced ? this.left() : this.displayMessage(Messages.notYetPlaced);
+            isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.right.exec(command)) {
-            isPlaced ? this.right() : this.displayMessage(Messages.notYetPlaced);
+            isPlaced ? this.turn(command) : this.displayMessage(Messages.notYetPlaced);
         } else if (Regex.report.exec(command)) {
             this.report();
         } else {
@@ -111,44 +111,22 @@ class Console extends Component {
         }
     }
     
-    left = () => {
-        const { orientation, coordinates } = this.state;
-     
-        let tempOrientation;
-        switch (orientation) {
-            case 'NORTH':
-            tempOrientation = 'WEST';
-            break;
-            case 'SOUTH':
-            tempOrientation = 'EAST';
-            break;
-            case 'EAST':
-            tempOrientation = 'NORTH';
-            break;
-            case 'WEST':
-            tempOrientation = 'SOUTH';
-            break;
-            default:
-        }
-        this.setState({ orientation: tempOrientation }, () => { console.log(`${coordinates[1]}, ${coordinates[0]}, ${orientation}`); return null; });
-    }
-    
-    right = () => {
+    turn = (turn) => {
         const { orientation, coordinates } = this.state;
       
         let tempOrientation;
         switch (orientation) {
             case 'NORTH':
-            tempOrientation = 'EAST';
+            tempOrientation = turn === 'RIGHT' ? 'EAST' : 'WEST';
             break;
             case 'SOUTH':
-            tempOrientation = 'WEST';
+            tempOrientation = turn === 'RIGHT' ? 'WEST' : 'EAST';
             break;
             case 'EAST':
-            tempOrientation = 'SOUTH';
+            tempOrientation = turn === 'RIGHT' ? 'SOUTH' : 'NORTH';
             break;
             case 'WEST':
-            tempOrientation = 'NORTH';
+            tempOrientation = turn === 'RIGHT' ? 'NORTH' : 'SOUTH';
             break;
             default:
         }
