@@ -37,7 +37,7 @@
     "jest-enzyme": "^6.0.2",
     "jsdom": "^11.12.0",
     "jsdom-global": "^3.0.2",
-    "lodash": "4.17.10",
+    "lodash": "4.17.15",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "prop-types": "15.6.2",
     "react": "16.4.1",
